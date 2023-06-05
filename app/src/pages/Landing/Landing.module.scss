@@ -1,0 +1,48 @@
+@import "@styles/variables.scss";
+
+.landing {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+  text-align: center;
+
+  .title {
+    .titleName {
+      letter-spacing: 0.1rem;
+      color: $clrLightGreen;
+    }
+    margin-bottom: 0.5rem;
+  }
+  .subtitle {
+    margin-bottom: 0.5rem;
+  }
+
+  .link {
+    border-radius: 1rem;
+    border: none;
+    outline: transparent;
+    overflow: hidden;
+    transition: all 0.5s ease;
+
+    a {
+      color: $clrWhite;
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      display: block;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .landing {
+    button {
+      opacity: 0.7;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}

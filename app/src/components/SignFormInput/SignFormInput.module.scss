@@ -1,0 +1,11 @@
+@import "@styles/variables.scss";
+
+.input {
+  border: none;
+  outline: transparent;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  background-color: $bgDarkThird;
+  color: $clrWhite;
+  letter-spacing: 0.05rem;
+}

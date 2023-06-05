@@ -1,5 +1,6 @@
 import IForm from "../../types/IForm";
 import { UseFormRegister } from "react-hook-form";
+import style from "./SignFormInput.module.scss";
 
 interface SignFormInputProps {
   inputType: "email" | "password" | "text";
@@ -16,6 +17,7 @@ export default function SignFormInput({
 }: SignFormInputProps) {
   return (
     <input
+      className={style.input}
       type={inputType}
       placeholder={inputPlaceholder}
       {...register(fieldName, {

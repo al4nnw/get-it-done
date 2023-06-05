@@ -1,0 +1,30 @@
+@import "@styles/variables.scss";
+
+.sign {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: $bgDarkMain;
+
+  .form {
+    h1 {
+      text-align: left;
+    }
+
+    background-color: $bgDarkSecondary;
+    width: 90vw;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    border-radius: 1rem;
+    padding: 1rem 2rem;
+    gap: 1rem;
+
+    span {
+      text-align: right !important;
+    }
+  }
+}

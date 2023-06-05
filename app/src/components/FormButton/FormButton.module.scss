@@ -1,0 +1,24 @@
+@import "@styles/variables.scss";
+
+.button {
+  background-color: $bgLightGreen;
+  border: none;
+  outline: transparent;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  color: $clrDarkGreen;
+  text-align: left;
+  letter-spacing: 0.05rem;
+  transition: all 0.5s ease;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .button {
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
