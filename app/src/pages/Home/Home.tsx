@@ -12,6 +12,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
+import style from "./Home.module.scss";
 
 interface IForm {
   taskName: string;
@@ -36,8 +37,8 @@ export default function Home() {
 
   onAuthStateChanged;
   return (
-    <main>
-      <div>
+    <main className={style.home}>
+      <div className={style.navbarLinks}>
         <FloatingButton
           elementType="div"
           elementText="John Doe"
@@ -54,15 +55,23 @@ export default function Home() {
           imageIcon={IconSettings}
         />
       </div>
-      <section>
-        <form>
-          <Title elementType="h1" elementText="Get It Done" />
+      <section className={style.mainContent}>
+        <form className={style.mainContentForm}>
+          <Title
+            elementType="h1"
+            elementText="Get It Done"
+            elementClass="homeTitle"
+          />
           <FormInput inputType="text" inputPlaceholder="Buy Bread" />
           <FormButton buttonType="submit" buttonText="Create" />
         </form>
-        <section>
-          <Title elementType="h2" elementText="Tasks" />
-          <div>
+        <section className={style.tasks}>
+          <Title
+            elementClass="taskTitle"
+            elementType="h2"
+            elementText="Tasks"
+          />
+          <div className={style.taskList}>
             <Task inputValue="Task 1" />
             <Task inputValue="Task 2" />
             <Task inputValue="Task 3" />

@@ -1,0 +1,51 @@
+@import "@styles/variables.scss";
+
+.home {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: $bgDarkMain;
+  position: relative;
+
+  .navbarLinks {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .mainContent {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem 3rem;
+    gap: 1.5rem;
+    width: 90vw;
+    max-width: 600px;
+    background-color: $bgDarkSecondary;
+    border-radius: 1rem;
+
+    .mainContentForm {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .taskList {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1rem;
+    }
+  }
+}

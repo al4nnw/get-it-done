@@ -5,12 +5,14 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import IForm from "../../../types/IForm";
 import style from "../Sign.module.scss";
 import LinkTo from "@components/Link/Link";
+import useUserSignin from "../../../utils/useUserSignin";
 
 export default function SignIn() {
   const { register, handleSubmit, reset } = useForm<IForm>();
+  const userSignIn = useUserSignin();
 
   const onSubmit: SubmitHandler<IForm> = (data: IForm) => {
-    console.log(data);
+    userSignIn(data);
     reset();
   };
 

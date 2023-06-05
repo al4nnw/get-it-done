@@ -1,4 +1,5 @@
 import IconDelete from "../../../assets/icons/iconDelete.svg";
+import style from "./Task.module.scss";
 
 interface TaskProps {
   inputValue: string;
@@ -6,10 +7,10 @@ interface TaskProps {
 
 export default function Task({ inputValue }: TaskProps) {
   return (
-    <article>
+    <article className={style.task}>
       <input type="text" readOnly value={inputValue} />
-      <div>
-        <input type="checkbox" />
+      <div className={style.taskInteractions}>
+        <input className={style.checkbox} type="checkbox" />
         <button>
           <img src={IconDelete} alt="" />
         </button>

@@ -1,7 +1,11 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../lib/firebase";
 import { useNavigate } from "react-router-dom";
-import { ISignForm } from "../types/IForm";
+
+interface ISignForm {
+  email: string;
+  password: string;
+}
 
 const useUserSignin = () => {
   const navigate = useNavigate();
@@ -18,6 +22,7 @@ const useUserSignin = () => {
         navigate("/home");
       }
     } catch (error) {
+      console.log(error);
       return false;
     }
   };
