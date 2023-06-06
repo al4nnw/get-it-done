@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import IForm from "../types/IForm";
+import axios from "axios";
 
 const useUserSignup = () => {
   const navigate = useNavigate();
@@ -21,6 +22,8 @@ const useUserSignup = () => {
       console.log(error);
     }
   };
+
+  return userSignup;
 };
 
 export default useUserSignup;

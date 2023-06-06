@@ -8,6 +8,7 @@
   overflow: hidden;
   gap: 1rem;
   padding: 0 0.5rem;
+  animation: fadeUp 0.3s ease;
 
   input {
     width: 100%;
@@ -16,7 +17,7 @@
     outline: transparent;
     background-color: transparent;
     padding: 1rem;
-    cursor: pointer;
+    font-size: max(1.3rem, 1vw);
   }
 
   .taskInteractions {
@@ -24,11 +25,6 @@
     justify-content: center;
     align-items: center;
     gap: 1rem;
-
-    .checkbox {
-      min-width: 30px;
-      min-height: 30px;
-    }
 
     button {
       background: transparent;
@@ -41,6 +37,40 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
+      svg {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
     }
+  }
+}
+
+.removeTask {
+  animation: fadeOut 0.2s ease;
+}
+
+.taskEdit {
+  color: $clrLightGreen !important;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(-5rem);
+    z-index: -10;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

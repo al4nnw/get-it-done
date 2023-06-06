@@ -9,4 +9,20 @@
   background-color: $bgDarkSecondary;
   padding: 1rem 2rem;
   cursor: pointer;
+  font-size: max(1rem, 0.8vw);
+  letter-spacing: 0.1rem;
+  border: none;
+  outline: transparent;
+  animation: fadeUp 1.5s ease;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

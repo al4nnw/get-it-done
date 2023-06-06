@@ -7,46 +7,98 @@ import Title from "@components/Title/Title";
 import Task from "./Task/Task";
 import FormButton from "@components/FormButton/FormButton";
 import FormInput from "@components/FormInput/FormInput";
-import { auth } from "../../lib/firebase";
-import { onAuthStateChanged } from "firebase/auth";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import style from "./Home.module.scss";
-
-interface IForm {
-  taskName: string;
-}
+import ITask from "../../types/ITask";
+import { useState, useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../lib/firebase";
+import { useNavigate } from "react-router-dom";
+import IUser from "../../types/IUser";
 
 export default function Home() {
-  const { register, handleSubmit } = useForm<IForm>();
-  const [userUid, setUserUid] = useState<string | undefined>();
+  const [user, setUser] = useState<IUser>();
   const navigate = useNavigate();
-
-  const onSubmit: SubmitHandler<IForm> = (data) => {
-    console.log(data);
-  };
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ITask>();
+  const [taskList, setTaskList] = useState<ITask[]>([]);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      const uid = user?.uid;
-      uid ? setUserUid(uid) : navigate("/signup");
-      console.log(uid);
+      if (!user) {
+        navigate("/signin");
+      } else {
+        setUser({
+          userEmail: user?.email,
+          userName: `${user?.email
+            ?.slice(0, user?.email?.indexOf("@"))[0]
+            .toUpperCase()}${user?.email?.slice(1, user?.email?.indexOf("@"))}`,
+        });
+      }
     });
-  }, [navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  onAuthStateChanged;
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
+  const onSubmit: SubmitHandler<ITask> = (data) => {
+    createNewTask(data);
+    reset();
+  };
+
+  function generateRandomId() {
+    return Math.random().toString(36);
+  }
+
+  function createNewTask({ taskName }: { taskName: string }) {
+    setTaskList((prev) => [
+      ...prev,
+      { taskName, taskId: generateRandomId(), completed: false },
+    ]);
+  }
+
+  function deleteTask(task: ITask) {
+    setTaskList((prev) => prev.filter((t) => t.taskId !== task.taskId));
+  }
+
+  function completeTask(task: ITask) {
+    setTaskList((prev) =>
+      prev.map((t) =>
+        t.taskId === task.taskId ? { ...t, completed: !t.completed } : t
+      )
+    );
+  }
+
+  function editTaskName(id: string | undefined, name: string) {
+    setTaskList((prev) =>
+      prev.map((t) =>
+        t.taskId === id
+          ? {
+              ...t,
+              taskName: name,
+            }
+          : t
+      )
+    );
+  }
+
   return (
     <main className={style.home}>
       <div className={style.navbarLinks}>
         <FloatingButton
           elementType="div"
-          elementText="John Doe"
+          elementText={user?.userName ?? "Unknown"}
           imageIcon={IconUser}
         />
         <FloatingButton
           elementType="div"
-          elementText="5 tasks / day"
+          elementText={user?.goal ?? "No goal"}
           imageIcon={IconGoal}
         />
         <FloatingLink
@@ -56,13 +108,24 @@ export default function Home() {
         />
       </div>
       <section className={style.mainContent}>
-        <form className={style.mainContentForm}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className={style.mainContentForm}
+        >
           <Title
             elementType="h1"
             elementText="Get It Done"
             elementClass="homeTitle"
           />
-          <FormInput inputType="text" inputPlaceholder="Buy Bread" />
+          <FormInput
+            inputType="text"
+            inputPlaceholder="Buy Bread"
+            nameField="taskName"
+            register={register}
+          />
+          {errors.taskName?.type === "required" && (
+            <span className={style.errorWarning}>Task name is required</span>
+          )}
           <FormButton buttonType="submit" buttonText="Create" />
         </form>
         <section className={style.tasks}>
@@ -72,11 +135,19 @@ export default function Home() {
             elementText="Tasks"
           />
           <div className={style.taskList}>
-            <Task inputValue="Task 1" />
-            <Task inputValue="Task 2" />
-            <Task inputValue="Task 3" />
-            <Task inputValue="Task 4" />
-            <Task inputValue="Task 5" />
+            {taskList.length > 0 ? (
+              taskList.map((task) => (
+                <Task
+                  editTaskName={editTaskName}
+                  key={task.taskId}
+                  task={task}
+                  deleteTask={deleteTask}
+                  completeTask={completeTask}
+                />
+              ))
+            ) : (
+              <span className={style.taskWarning}>No tasks were found!</span>
+            )}
           </div>
         </section>
       </section>

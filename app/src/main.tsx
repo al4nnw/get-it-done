@@ -6,7 +6,7 @@ import SignIn from "@pages/Sign/SignIn/SignIn";
 import SignUp from "@pages/Sign/SignUp/SignUp";
 import Home from "@pages/Home/Home";
 import Error from "@pages/Error/Error";
-import Settings from "@pages/Settings/Task";
+import Settings from "@pages/Settings/Settings";
 /* import store from "./lib/redux";
 import { Provider } from "react-redux"; */
 

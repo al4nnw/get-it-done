@@ -1,0 +1,44 @@
+@import "@styles/variables.scss";
+
+.settings {
+  display: flex;
+  background-color: $bgDarkMain;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+
+  .navbarLinks {
+    display: flex;
+    justify-content: space-around;
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    padding: 1rem;
+  }
+
+  .form {
+    width: 90vw;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    background-color: $bgDarkSecondary;
+    gap: 1rem;
+    padding: 2rem 1rem;
+    border-radius: 1rem;
+    animation: fadeUp 1.5s ease;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -8,8 +8,12 @@
   min-height: 100vh;
   text-align: center;
   background-color: $bgDarkMain;
+  padding: 1rem;
 
   .title {
+    opacity: 0;
+    font-size: max(5ch, 3vw);
+    animation: fadeBottom 1s 1s ease-in-out forwards;
     .titleName {
       letter-spacing: 0.1rem;
       color: $clrLightGreen;
@@ -17,8 +21,11 @@
     margin-bottom: 0.5rem;
   }
   .subtitle {
+    opacity: 0;
+    animation: fadeBottom 1s 0.5s ease-in-out forwards;
     margin-bottom: 0.5rem;
     font-weight: 500;
+    font-size: max(2rem, 2vw);
   }
 
   .link {
@@ -28,6 +35,8 @@
     overflow: hidden;
     transition: all 0.5s ease;
     background: $bgDarkSecondary;
+    font-size: max(1.5rem, 1.5vw);
+    animation: fadeBottom 1s ease-in-out forwards;
 
     a {
       color: $clrWhite;
@@ -38,14 +47,13 @@
   }
 }
 
-@media (min-width: 768px) {
-  .landing {
-    button {
-      opacity: 0.7;
-
-      &:hover {
-        opacity: 1;
-      }
-    }
+@keyframes fadeBottom {
+  from {
+    transform: translateY(-5rem);
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

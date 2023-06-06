@@ -1,0 +1,63 @@
+@import "@styles/variables.scss";
+
+.configInput {
+  background-color: $bgDarkThird;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  border-radius: 1rem;
+  padding: 0.3rem 1rem;
+  gap: 1rem;
+
+  input {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 1rem;
+    background: transparent;
+    border-radius: 1rem;
+    font-size: max(1.5rem, 0.8vw);
+  }
+
+  button {
+    background-color: $bgLightGreen;
+    padding: 0.5rem 1rem;
+    border: none;
+    outline: none;
+    border-radius: 1rem;
+    color: $clrDarkGreen;
+    font-size: max(1.3rem, 0.7vw);
+    cursor: pointer;
+    transition: all 0.5s ease;
+  }
+}
+
+@media (min-width: 768px) {
+  .configInput {
+    button {
+      opacity: 0.7;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+@media (max-width: 425px) {
+  .configInput {
+    flex-direction: column;
+    text-align: center;
+    gap: 0;
+
+    input {
+      text-align: center;
+    }
+
+    button {
+      margin-bottom: 1rem;
+    }
+  }
+}

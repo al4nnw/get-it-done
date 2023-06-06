@@ -19,7 +19,11 @@ export default function SignIn() {
   return (
     <main className={style.sign}>
       <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
-        <Title elementType="h1" elementText="Sign In" />
+        <Title
+          elementClass="signTitle"
+          elementType="h1"
+          elementText="Sign In"
+        />
         <SignFormInput
           inputType="email"
           inputPlaceholder="johndoe@gmail.com"
@@ -32,7 +36,7 @@ export default function SignIn() {
           register={register}
           fieldName="password"
         />
-        <span>Forgot password?</span>
+        <LinkTo linkValue="/forgot-password" textValue="Forgot password?" />
         <FormButton buttonType="submit" buttonText="Login" />
         <LinkTo linkValue="/signup" textValue="Create account" />
       </form>

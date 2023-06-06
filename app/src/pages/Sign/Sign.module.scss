@@ -14,7 +14,7 @@
 
     background-color: $bgDarkSecondary;
     width: 90vw;
-    max-width: 500px;
+    max-width: 600px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -23,8 +23,17 @@
     padding: 1rem 2rem;
     gap: 1rem;
 
-    span {
-      text-align: right !important;
+    input + a {
+      text-align: right;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .form {
+    h1,
+    input + a {
+      text-align: center !important;
     }
   }
 }

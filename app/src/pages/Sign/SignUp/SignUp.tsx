@@ -5,19 +5,25 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import IForm from "../../../types/IForm";
 import style from "../Sign.module.scss";
 import LinkTo from "@components/Link/Link";
+import useUserSignup from "../../../utils/useUserSignup";
 
 export default function SignUp() {
   const { register, handleSubmit, reset } = useForm<IForm>();
+  const userSignUp = useUserSignup();
 
   const onSubmit: SubmitHandler<IForm> = (data) => {
-    console.log(data);
+    userSignUp(data);
     reset();
   };
 
   return (
     <main className={style.sign}>
       <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
-        <Title elementType="h1" elementText="Sign Up" />
+        <Title
+          elementType="h1"
+          elementClass="signTitle"
+          elementText="Sign Up"
+        />
         <SignFormInput
           register={register}
           fieldName="email"
