@@ -1,13 +1,15 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../lib/firebase";
 import { useNavigate } from "react-router-dom";
-import IForm from "../types/IForm";
-import axios from "axios";
+import { ValidationSchemaSignUp } from "@pages/Sign/SignUp/SignUp";
+import { useState } from "react";
 
 const useUserSignup = () => {
+  const [firebaseErrors, setFirebaseErrors] = useState<any>(null);
   const navigate = useNavigate();
 
-  const userSignup = async (data: IForm) => {
+  const userSignup = async (data: ValidationSchemaSignUp) => {
     try {
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
@@ -15,15 +17,20 @@ const useUserSignup = () => {
         data.password
       );
       const user = userCredentials.user;
-      if (user) {
+      if (user && auth.currentUser && data.firstName) {
+        await updateProfile(auth.currentUser, {
+          ...user,
+          displayName: data.firstName,
+        });
         navigate("/home");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      setFirebaseErrors(error);
     }
   };
 
-  return userSignup;
+  return { userSignup, firebaseErrors };
 };
 
 export default useUserSignup;

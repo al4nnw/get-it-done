@@ -1,12 +1,13 @@
-import IForm from "../../types/IForm";
 import { UseFormRegister } from "react-hook-form";
 import style from "./SignFormInput.module.scss";
+import { ValidationSchemaSignIn } from "@pages/Sign/SignIn/SignIn";
+import { ValidationSchemaSignUp } from "@pages/Sign/SignUp/SignUp";
 
 interface SignFormInputProps {
   inputType: "email" | "password" | "text";
   inputPlaceholder: string;
-  register: UseFormRegister<IForm>;
-  fieldName: keyof IForm;
+  register: UseFormRegister<ValidationSchemaSignIn | ValidationSchemaSignUp>;
+  fieldName: keyof ValidationSchemaSignIn | keyof ValidationSchemaSignUp;
 }
 
 export default function SignFormInput({
@@ -20,10 +21,7 @@ export default function SignFormInput({
       className={style.input}
       type={inputType}
       placeholder={inputPlaceholder}
-      {...register(fieldName, {
-        required: true,
-        ...(inputType === "password" && { minLength: 6 }),
-      })}
+      {...register(fieldName)}
     />
   );
 }

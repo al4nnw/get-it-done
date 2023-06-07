@@ -32,11 +32,10 @@ export default function Home() {
       if (!user) {
         navigate("/signin");
       } else {
+        console.log(user);
         setUser({
+          userName: user?.displayName,
           userEmail: user?.email,
-          userName: `${user?.email
-            ?.slice(0, user?.email?.indexOf("@"))[0]
-            .toUpperCase()}${user?.email?.slice(1, user?.email?.indexOf("@"))}`,
         });
       }
     });

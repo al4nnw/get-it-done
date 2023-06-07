@@ -23,16 +23,39 @@
     padding: 1rem 2rem;
     gap: 1rem;
 
-    input + a {
+    input + a,
+    span + a {
       text-align: right;
     }
+  }
+}
+
+.errorWarning {
+  animation: fadeUp 0.3s ease;
+  color: red;
+  font-size: max(1.2rem, 0.8vw);
+  letter-spacing: 0.1rem;
+  text-align: left;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(5rem);
+    z-index: -1;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @media (max-width: 768px) {
   .form {
     h1,
-    input + a {
+    input + a,
+    span + a,
+    .errorWarning {
       text-align: center !important;
     }
   }

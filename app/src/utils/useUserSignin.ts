@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../lib/firebase";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 interface ISignForm {
   email: string;
@@ -8,6 +10,7 @@ interface ISignForm {
 }
 
 const useUserSignin = () => {
+  const [firebaseErrors, setFirebaseErrors] = useState<any>(null);
   const navigate = useNavigate();
 
   const userSignin = async (data: ISignForm) => {
@@ -21,13 +24,13 @@ const useUserSignin = () => {
       if (user) {
         navigate("/home");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      return false;
+      setFirebaseErrors(error);
     }
   };
 
-  return userSignin;
+  return { userSignin, firebaseErrors };
 };
 
 export default useUserSignin;

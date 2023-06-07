@@ -22,9 +22,7 @@ export default function Settings() {
       } else {
         setUser({
           userEmail: user?.email,
-          userName: `${user?.email
-            ?.slice(0, user?.email?.indexOf("@"))[0]
-            .toUpperCase()}${user?.email?.slice(1, user?.email?.indexOf("@"))}`,
+          userName: user?.displayName,
         });
       }
     });
@@ -34,6 +32,10 @@ export default function Settings() {
   useEffect(() => {
     console.log(user);
   }, [user]);
+
+  const handleChangeClick = () => {
+    console.log("teste");
+  };
 
   const onClickLogout = () => {
     auth
@@ -73,13 +75,25 @@ export default function Settings() {
           elementType="h1"
           elementText="Settings"
         />
-        <ConfigInput inputValue={user?.userName ?? "Unknown"} canBeChanged />
+        <ConfigInput
+          inputValue={user?.userName ?? "Unknown"}
+          handleClick={handleChangeClick}
+          canBeChanged
+        />
         <ConfigInput
           inputValue={user?.userEmail ?? "unknown@gmail.com"}
           canBeChanged={false}
         />
-        <ConfigInput inputValue="Password" canBeChanged />
-        <ConfigInput inputValue={user?.goal ?? "No goal"} canBeChanged />
+        <ConfigInput
+          handleClick={handleChangeClick}
+          inputValue="Password"
+          canBeChanged
+        />
+        <ConfigInput
+          handleClick={handleChangeClick}
+          inputValue={user?.goal ?? "No goal"}
+          canBeChanged
+        />
         <FormButton
           buttonClass="deleteAccountButton"
           buttonType="button"
