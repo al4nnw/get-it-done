@@ -46,3 +46,15 @@
     transform: translateY(0);
   }
 }
+
+@media (max-height: 650px) {
+  .settings {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 3rem;
+
+    .navbarLinks {
+      position: static !important;
+    }
+  }
+}

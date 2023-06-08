@@ -2,17 +2,19 @@
 
 .home {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   min-height: 100vh;
   background-color: $bgDarkMain;
+  flex-direction: column;
   position: relative;
+  gap: 3rem;
+  padding-bottom: 5rem;
 
   .navbarLinks {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    position: absolute;
     top: 0;
     left: 0;
     width: 100%;

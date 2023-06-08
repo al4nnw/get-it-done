@@ -1,7 +1,7 @@
 @import "@styles/variables.scss";
 
 .notFound {
-  min-height: 100vh;
+  min-height: 100vh !important;
   display: flex;
   justify-content: center;
   align-items: center;
