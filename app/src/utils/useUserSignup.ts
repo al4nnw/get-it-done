@@ -4,8 +4,11 @@ import { auth } from "../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import { ValidationSchemaSignUp } from "@pages/Sign/SignUp/SignUp";
 import { useState } from "react";
+import axios from "axios";
 
 const useUserSignup = () => {
+  const createUserDocFunctionURL =
+    "https://createuserdoc-sh3wjct3pa-rj.a.run.app";
   const [firebaseErrors, setFirebaseErrors] = useState<any>(null);
   const navigate = useNavigate();
 
@@ -22,6 +25,12 @@ const useUserSignup = () => {
           ...user,
           displayName: data.firstName,
         });
+        await axios
+          .post(createUserDocFunctionURL, {
+            userUid: user.uid,
+            userEmail: user.email,
+          })
+          .then((response) => console.log(response));
         navigate("/home");
       }
     } catch (error: any) {

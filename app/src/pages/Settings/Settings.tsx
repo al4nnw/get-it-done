@@ -21,6 +21,7 @@ export default function Settings() {
         navigate("/signin");
       } else {
         setUser({
+          userUid: user.uid,
           userEmail: user?.email,
           userName: user?.displayName,
         });
@@ -33,8 +34,9 @@ export default function Settings() {
     console.log(user);
   }, [user]);
 
-  const handleChangeClick = () => {
-    console.log("teste");
+  const handleChangeClick = (element: HTMLElement) => {
+    element?.removeAttribute("readOnly");
+    element?.focus;
   };
 
   const onClickLogout = () => {

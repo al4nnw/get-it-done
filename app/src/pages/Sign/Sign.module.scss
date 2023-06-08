@@ -8,6 +8,8 @@
   background-color: $bgDarkMain;
 
   .form {
+    animation: fadeUpForm 1s ease;
+
     h1 {
       text-align: left;
     }
@@ -58,5 +60,16 @@
     .errorWarning {
       text-align: center !important;
     }
+  }
+}
+
+@keyframes fadeUpForm {
+  from {
+    opacity: 0;
+    transform: translateY(5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

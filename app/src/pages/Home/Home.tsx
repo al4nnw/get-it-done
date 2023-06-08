@@ -15,6 +15,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import IUser from "../../types/IUser";
+import axios from "axios";
 
 export default function Home() {
   const [user, setUser] = useState<IUser>();
@@ -34,6 +35,7 @@ export default function Home() {
       } else {
         console.log(user);
         setUser({
+          userUid: user.uid,
           userName: user?.displayName,
           userEmail: user?.email,
         });
@@ -55,11 +57,23 @@ export default function Home() {
     return Math.random().toString(36);
   }
 
-  function createNewTask({ taskName }: { taskName: string }) {
+  async function createNewTask({ taskName }: { taskName: string }) {
+    console.log("adding task");
     setTaskList((prev) => [
       ...prev,
       { taskName, taskId: generateRandomId(), completed: false },
     ]);
+    console.log("adding task");
+    const baseUrl = "https://createnewtask-sh3wjct3pa-rj.a.run.app";
+    await axios
+      .post(baseUrl, {
+        userUid: user?.userUid,
+        task: {
+          taskName,
+          completed: false,
+        },
+      })
+      .then((response) => console.log(response));
   }
 
   function deleteTask(task: ITask) {
