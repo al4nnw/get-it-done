@@ -25,12 +25,12 @@ const useUserSignup = () => {
           ...user,
           displayName: data.firstName,
         });
-        await axios
+        /* await axios
           .post(createUserDocFunctionURL, {
             userUid: user.uid,
             userEmail: user.email,
           })
-          .then((response) => console.log(response));
+          .then((response) => console.log(response)); */
         navigate("/home");
       }
     } catch (error: any) {

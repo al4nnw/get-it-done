@@ -65,7 +65,7 @@ export default function Home() {
     ]);
     console.log("adding task");
     const baseUrl = "https://createnewtask-sh3wjct3pa-rj.a.run.app";
-    await axios
+    /*     await axios
       .post(baseUrl, {
         userUid: user?.userUid,
         task: {
@@ -73,7 +73,7 @@ export default function Home() {
           completed: false,
         },
       })
-      .then((response) => console.log(response));
+      .then((response) => console.log(response)); */
   }
 
   function deleteTask(task: ITask) {

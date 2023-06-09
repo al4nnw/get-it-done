@@ -67,7 +67,6 @@ export default function SignIn() {
         {firebaseErrors && (
           <span className={style.errorWarning}>{firebaseErrors.code}</span>
         )}
-        <LinkTo linkValue="/forgot-password" textValue="Forgot password?" />
         <FormButton buttonType="submit" buttonText="Login" />
         <LinkTo linkValue="/signup" textValue="Create account" />
       </form>

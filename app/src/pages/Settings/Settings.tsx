@@ -35,8 +35,12 @@ export default function Settings() {
   }, [user]);
 
   const handleChangeClick = (element: HTMLElement) => {
-    element?.removeAttribute("readOnly");
-    element?.focus;
+    console.log(element);
+
+    /*    if (element.nodeValue != "Password") {
+      element?.removeAttribute("readOnly");
+      element?.focus;
+    } */
   };
 
   const onClickLogout = () => {

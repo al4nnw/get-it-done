@@ -17,23 +17,42 @@ export default function Task({
   editTaskName,
 }: TaskProps) {
   return (
-    <article id="task" className={style.task}>
+    <article
+      id={task.taskName.trim().split(" ").join("")}
+      className={style.task}
+    >
       <input
         type="text"
         readOnly
         defaultValue={task.taskName}
         onFocus={(e) => {
-          e.currentTarget.readOnly = false;
-          e.currentTarget.classList.add(`${style["taskEdit"]}`);
+          if (!task.completed) {
+            e.currentTarget.readOnly = false;
+            e.currentTarget.classList.add(`${style["taskEdit"]}`);
+          }
         }}
         onBlur={(e) => {
-          e.currentTarget.readOnly = true;
-          e.currentTarget.classList.remove(`${style["taskEdit"]}`);
-          editTaskName(task.taskId, e.target.value);
+          if (e.currentTarget.value != "") {
+            e.currentTarget.readOnly = true;
+            e.currentTarget.classList.remove(`${style["taskEdit"]}`);
+            editTaskName(task.taskId, e.target.value);
+          } else {
+            e.currentTarget.value = task.taskName;
+            e.currentTarget.readOnly = true;
+            e.currentTarget.classList.remove(`${style["taskEdit"]}`);
+          }
         }}
       />
       <div className={style.taskInteractions}>
-        <button onClick={() => completeTask(task)}>
+        <button
+          onClick={() => {
+            const taskElement = document.querySelector(
+              `#${task.taskName.trim().split(" ").join("")}`
+            );
+            taskElement?.classList.toggle(`${style["taskCompleted"]}`);
+            completeTask(task);
+          }}
+        >
           {task.completed ? (
             <IoIosCheckbox />
           ) : (
@@ -42,7 +61,9 @@ export default function Task({
         </button>
         <button
           onClick={() => {
-            const taskElement = document.querySelector("#task");
+            const taskElement = document.querySelector(
+              `#${task.taskName.trim().split(" ").join("")}`
+            );
             taskElement?.classList.add(`${style["removeTask"]}`);
             setTimeout(() => {
               deleteTask(task);
