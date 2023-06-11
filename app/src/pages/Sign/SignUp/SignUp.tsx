@@ -55,10 +55,6 @@ export default function SignUp() {
     reset();
   };
 
-  useEffect(() => {
-    currentUser && navigate("/home");
-  }, [currentUser, navigate]);
-
   return (
     <main className={style.sign}>
       <form className={style.form} onSubmit={handleSubmit(onSubmit)}>

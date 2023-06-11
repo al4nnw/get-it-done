@@ -6,6 +6,7 @@ import { ValidationSchemaSignUp } from "@pages/Sign/SignUp/SignUp";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import userActionTypes from "../lib/redux/reducers/user/action-types.ts";
+import axios from "axios";
 
 const useUserSignup = () => {
   const dispatch = useDispatch();
@@ -35,6 +36,14 @@ const useUserSignup = () => {
             userGoal: "No goal",
           },
         });
+        await axios
+          .post("https://createuserdoc-sh3wjct3pa-rj.a.run.app/", {
+            userUid: user.uid,
+            userEmail: user.email,
+          })
+          .then((response) => console.log(response))
+          .catch((error) => console.log(error));
+
         navigate("/home");
       }
     } catch (error: any) {
