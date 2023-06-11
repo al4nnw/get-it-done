@@ -62,13 +62,10 @@ export default function Home() {
     };
     firstLoad && setIsLoading(true);
     await axios
-      .post(
-        "http://127.0.0.1:5001/sittus-dev/southamerica-east1/createNewTask",
-        {
-          userUID: currentUser.userUID,
-          task: newTask,
-        }
-      )
+      .post("https://createnewtask-sh3wjct3pa-rj.a.run.app", {
+        userUID: currentUser.userUID,
+        task: newTask,
+      })
       .then(() => {
         dispatch(addNewTask(newTask));
       })

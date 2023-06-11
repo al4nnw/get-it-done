@@ -20,12 +20,9 @@ export default function useGetUser() {
       })
     );
     await axios
-      .post(
-        "http://127.0.0.1:5001/sittus-dev/southamerica-east1/getUserTasks",
-        {
-          userUID: user?.uid,
-        }
-      )
+      .post("https://getusertasks-sh3wjct3pa-rj.a.run.app", {
+        userUID: user?.uid,
+      })
       .then((response) => dispatch(setCurrentUserTasks([...response.data])))
       .catch((error) => console.log(error));
   }

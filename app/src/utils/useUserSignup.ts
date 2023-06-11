@@ -27,13 +27,10 @@ const useUserSignup = () => {
           displayName: data.firstName,
         });
         await axios
-          .post(
-            "http://127.0.0.1:5001/sittus-dev/southamerica-east1/createUserDoc",
-            {
-              userUID: user.uid,
-              userEmail: user.email,
-            }
-          )
+          .post("https://createuserdoc-sh3wjct3pa-rj.a.run.app", {
+            userUID: user.uid,
+            userEmail: user.email,
+          })
           .then(() => {
             dispatch({
               type: userActionTypes.LOGIN,
