@@ -7,6 +7,8 @@ import useUserSignup from "../../../utils/useUserSignup";
 import SignFormInput from "@components/SignFormInput/SignFormInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useState } from "react";
+import Loading from "@pages/Loading/Loading";
 
 const validationSchema = z
   .object({
@@ -33,6 +35,7 @@ const validationSchema = z
 export type ValidationSchemaSignUp = z.infer<typeof validationSchema>;
 
 export default function SignUp() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -46,9 +49,15 @@ export default function SignUp() {
   const onSubmit: SubmitHandler<ValidationSchemaSignUp> = async (
     data: ValidationSchemaSignUp
   ) => {
+    setIsLoading(true);
     await userSignup(data);
+    setIsLoading(false);
     reset();
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <main className={style.sign}>

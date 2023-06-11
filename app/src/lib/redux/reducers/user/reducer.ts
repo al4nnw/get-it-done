@@ -32,9 +32,7 @@ const userReducer = (state = inicialState, action: IAction) => {
       return { ...state, currentUser: action.payload };
     case userActionTypes.LOGOUT:
       return {
-        ...state,
-        currentUser: null,
-        userTasks: null,
+        inicialState,
       };
     case userActionTypes.SET_TASKS:
       return {

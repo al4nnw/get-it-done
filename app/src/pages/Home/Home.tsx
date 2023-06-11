@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import IconUser from "../../assets/icons/iconUser.svg";
-import IconGoal from "../../assets/icons/iconGoal.svg";
 import IconSettings from "../../assets/icons/iconGear.svg";
 import FloatingButton from "@components/FloatingButton/FloatingButton";
 import FloatingLink from "@components/FloatingLink/FloatingLink";
@@ -16,16 +15,27 @@ import { addNewTask } from "../../lib/redux/reducers/user/actions";
 import generateNewId from "../../utils/generateNewId";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import Loading from "@pages/Loading/Loading";
+import useGetUser from "../../utils/useGetUser";
 
 interface RootState {
   userReducer: any; // replace 'any' with the shape of your state in userReducer
 }
 
 export default function Home() {
+  const getUser = useGetUser();
+  const [firstLoad, setFirstLoad] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const { currentUser, userTasks } = useSelector(
     (rootReducer: RootState) => rootReducer.userReducer
   );
+  console.log(userTasks);
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const {
     register,
@@ -50,12 +60,27 @@ export default function Home() {
       isCompleted: false,
       taskCreationDate: generateNewDate(),
     };
-    dispatch(addNewTask(newTask));
-    await axios.post("https://createnewtask-sh3wjct3pa-rj.a.run.app/", {
-      newTask,
-    });
+    firstLoad && setIsLoading(true);
+    await axios
+      .post(
+        "http://127.0.0.1:5001/sittus-dev/southamerica-east1/createNewTask",
+        {
+          userUID: currentUser.userUID,
+          task: newTask,
+        }
+      )
+      .then(() => {
+        dispatch(addNewTask(newTask));
+      })
+      .catch((error) => console.log(error));
+    firstLoad && setIsLoading(false);
+    firstLoad && setFirstLoad(false);
     reset();
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <main className={style.home}>
@@ -64,11 +89,6 @@ export default function Home() {
           elementType="div"
           elementText={currentUser.userName}
           imageIcon={IconUser}
-        />
-        <FloatingButton
-          elementType="div"
-          elementText={currentUser.userGoal}
-          imageIcon={IconGoal}
         />
         <FloatingLink
           elementLink="/home/settings"

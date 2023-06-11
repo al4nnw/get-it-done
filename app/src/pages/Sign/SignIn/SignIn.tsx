@@ -7,6 +7,8 @@ import LinkTo from "@components/Link/Link";
 import useUserSignin from "../../../utils/useUserSignin";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useState } from "react";
+import Loading from "@pages/Loading/Loading";
 
 const validationSchema = z.object({
   email: z.string().min(1, { message: "Email is required" }).email({
@@ -20,6 +22,7 @@ const validationSchema = z.object({
 export type ValidationSchemaSignIn = z.infer<typeof validationSchema>;
 
 export default function SignIn() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -34,9 +37,15 @@ export default function SignIn() {
   const onSubmit: SubmitHandler<ValidationSchemaSignIn> = async (
     data: ValidationSchemaSignIn
   ) => {
+    setIsLoading(true);
     await userSignin(data);
+    setIsLoading(false);
     reset();
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <main className={style.sign}>

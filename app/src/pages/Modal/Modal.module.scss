@@ -1,12 +1,27 @@
 @import "@styles/variables.scss";
 
 .modal {
-  position: absolute;
+  position: fixed; /* Use "fixed" instead of "absolute" */
   inset: 0;
   z-index: 200;
-  display: flex;
+  display: none !important;
   justify-content: center;
   align-items: center;
   background-color: $bgDarkMain;
-  min-height: 100vh;
+  overflow: hidden;
+}
+
+.isModalOpen {
+  display: flex !important;
+  animation: openingModal 0.5s ease;
+}
+
+@keyframes openingModal {
+  from {
+    opacity: 0;
+    transform: translateY(100vh);
+  }
+  to {
+    transform: translateY(0);
+  }
 }

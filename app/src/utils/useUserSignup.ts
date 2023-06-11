@@ -26,32 +26,32 @@ const useUserSignup = () => {
           ...user,
           displayName: data.firstName,
         });
-        console.log("SETTING USER");
-        dispatch({
-          type: userActionTypes.LOGIN,
-          payload: {
-            userName: user.displayName,
-            userEmail: user.email,
-            userUID: user.uid,
-            userGoal: "No goal",
-          },
-        });
         await axios
-          .post("https://createuserdoc-sh3wjct3pa-rj.a.run.app/", {
-            userUid: user.uid,
-            userEmail: user.email,
+          .post(
+            "http://127.0.0.1:5001/sittus-dev/southamerica-east1/createUserDoc",
+            {
+              userUID: user.uid,
+              userEmail: user.email,
+            }
+          )
+          .then(() => {
+            dispatch({
+              type: userActionTypes.LOGIN,
+              payload: {
+                userName: user.displayName,
+                userEmail: user.email,
+                userUID: user.uid,
+                userGoal: "No goal",
+              },
+            });
+            navigate("/home");
           })
-          .then((response) => console.log(response))
           .catch((error) => console.log(error));
-
-        navigate("/home");
       }
     } catch (error: any) {
-      console.log(error);
       setFirebaseErrors(error);
     }
   };
-
   return { userSignup, firebaseErrors };
 };
 

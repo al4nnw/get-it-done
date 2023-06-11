@@ -5,6 +5,8 @@ import { auth } from "../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { setCurrentUserTasks } from "../lib/redux/reducers/user/actions.ts";
+import axios from "axios";
 
 interface ISignForm {
   email: string;
@@ -34,10 +36,21 @@ const useUserSignin = () => {
             userGoal: "No goal",
           },
         });
+        await axios
+          .post(
+            "http://127.0.0.1:5001/sittus-dev/southamerica-east1/getUserTasks",
+            {
+              userUID: user.uid,
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            dispatch(setCurrentUserTasks([...response.data]));
+          });
+
         navigate("/home");
       }
     } catch (error: any) {
-      console.log(error);
       setFirebaseErrors(error);
     }
   };

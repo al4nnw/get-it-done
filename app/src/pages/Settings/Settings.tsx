@@ -11,13 +11,17 @@ import style from "./Settings.module.scss";
 import { getAuth, deleteUser } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../lib/firebase";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentUserNull } from "../../lib/redux/reducers/user/actions";
+import Modal from "@pages/Modal/Modal";
+import { useState } from "react";
 
 interface RootState {
   userReducer: any; // replace 'any' with the shape of your state in userReducer
 }
 
 export default function Settings() {
+  const dispatch = useDispatch();
   const { currentUser } = useSelector(
     (rootReducer: RootState) => rootReducer.userReducer
   );
@@ -39,6 +43,7 @@ export default function Settings() {
     const user = auth.currentUser;
     if (user) {
       deleteUser(user).then(() => {
+        dispatch(setCurrentUserNull());
         navigate("/signup");
       });
     }
@@ -65,10 +70,9 @@ export default function Settings() {
           elementType="h1"
           elementText="Settings"
         />
-        <ConfigInput inputValue={currentUser.userName} canBeChanged />
+        <ConfigInput inputValue={currentUser.userName} canBeChanged={false} />
         <ConfigInput inputValue={currentUser.userEmail} canBeChanged={false} />
-        <ConfigInput inputValue="Password" canBeChanged />
-        <ConfigInput inputValue={currentUser.userGoal} canBeChanged />
+        <ConfigInput inputValue="Password" canBeChanged={false} />
         <FormButton
           buttonClass="deleteAccountButton"
           buttonType="button"

@@ -1,5 +1,5 @@
 export default interface IUser {
-  userUid: string;
+  userUID: string;
   userName: string | null | undefined;
   userEmail: string | null | undefined;
   goal?: string;

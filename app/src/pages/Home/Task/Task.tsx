@@ -1,23 +1,38 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import ITask from "../../../types/ITask";
 import { MdDelete, MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
 import { IoIosCheckbox } from "react-icons/io";
 import style from "./Task.module.scss";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   updateTaskCompleted,
   updateTaskName,
   deleteTask,
 } from "../../../lib/redux/reducers/user/actions";
+import axios from "axios";
+import classNames from "classnames";
 
 interface TaskProps {
   task: ITask;
 }
 
+interface RootState {
+  userReducer: any; // replace 'any' with the shape of your state in userReducer
+}
+
 export default function Task({ task }: TaskProps) {
-  console.log(task);
+  const { currentUser } = useSelector(
+    (rootReducer: RootState) => rootReducer.userReducer
+  );
   const dispatch = useDispatch();
   return (
-    <article id={task.taskId} className={style.task}>
+    <article
+      id={task.taskId}
+      className={classNames({
+        [style.task]: true,
+        [style.taskCompleted]: task.isCompleted,
+      })}
+    >
       <input
         type="text"
         readOnly
@@ -28,13 +43,28 @@ export default function Task({ task }: TaskProps) {
             e.currentTarget.classList.add(`${style["taskEdit"]}`);
           }
         }}
-        onBlur={(e) => {
+        onBlur={async (e) => {
           if (e.currentTarget.value != "") {
             e.currentTarget.readOnly = true;
             e.currentTarget.classList.remove(`${style["taskEdit"]}`);
-            dispatch(
-              updateTaskName({ taskId: task.taskId, taskName: e.target.value })
-            );
+
+            await axios
+              .post(
+                "http://127.0.0.1:5001/sittus-dev/southamerica-east1/updateTaskName",
+                {
+                  userUID: currentUser.userUID,
+                  task: { ...task, taskName: e.target.value },
+                }
+              )
+              .then((response) => {
+                console.log(response);
+                dispatch(
+                  updateTaskName({
+                    taskId: task.taskId,
+                    taskName: e.target.value,
+                  })
+                );
+              });
           } else {
             e.currentTarget.value = task.taskName;
             e.currentTarget.readOnly = true;
@@ -44,10 +74,19 @@ export default function Task({ task }: TaskProps) {
       />
       <div className={style.taskInteractions}>
         <button
-          onClick={() => {
-            const taskElement = document.querySelector(`#${task.taskId}`);
-            taskElement?.classList.toggle(`${style["taskCompleted"]}`);
-            dispatch(updateTaskCompleted(task));
+          onClick={async () => {
+            await axios
+              .post(
+                "http://127.0.0.1:5001/sittus-dev/southamerica-east1/updateTaskStatus",
+                {
+                  userUID: currentUser.userUID,
+                  task,
+                }
+              )
+              .then(() => {
+                dispatch(updateTaskCompleted(task));
+              })
+              .catch((error) => console.log(error));
           }}
         >
           {task.isCompleted ? (
@@ -57,12 +96,22 @@ export default function Task({ task }: TaskProps) {
           )}
         </button>
         <button
-          onClick={() => {
-            const taskElement = document.querySelector(`#${task.taskId}`);
-            taskElement?.classList.add(`${style["removeTask"]}`);
-            setTimeout(() => {
-              dispatch(deleteTask(task));
-            }, 100);
+          onClick={async () => {
+            await axios
+              .post(
+                "http://127.0.0.1:5001/sittus-dev/southamerica-east1/deleteTask",
+                {
+                  userUID: currentUser.userUID,
+                  task,
+                }
+              )
+              .then(() => {
+                const taskElement = document.querySelector(`#${task.taskId}`);
+                taskElement?.classList.add(`${style["removeTask"]}`);
+                setTimeout(() => {
+                  dispatch(deleteTask(task));
+                }, 100);
+              });
           }}
         >
           <MdDelete />
