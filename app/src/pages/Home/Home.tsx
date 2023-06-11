@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import IconUser from "../../assets/icons/iconUser.svg";
 import IconGoal from "../../assets/icons/iconGoal.svg";
@@ -14,11 +15,16 @@ import ITask from "../../types/ITask";
 import { addNewTask } from "../../lib/redux/reducers/user/actions";
 import generateNewId from "../../utils/generateNewId";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+
+interface RootState {
+  userReducer: any; // replace 'any' with the shape of your state in userReducer
+}
 
 export default function Home() {
   const dispatch = useDispatch();
   const { currentUser, userTasks } = useSelector(
-    (rootReducer) => rootReducer.userReducer
+    (rootReducer: RootState) => rootReducer.userReducer
   );
 
   const {
@@ -35,17 +41,19 @@ export default function Home() {
     }/${date.getFullYear()}`;
   };
 
-  const onSubmit: SubmitHandler<ITask> = (data) => {
-    dispatch(
-      addNewTask({
-        ...data,
-        taskId: `${data.taskName
-          .trim()
-          .slice(0, data.taskName.indexOf(" "))}${generateNewId()}`,
-        isCompleted: false,
-        taskCreationDate: generateNewDate(),
-      })
-    );
+  const onSubmit: SubmitHandler<ITask> = async (data) => {
+    const newTask = {
+      ...data,
+      taskId: `${data.taskName
+        .trim()
+        .slice(0, data.taskName.indexOf(" "))}${generateNewId()}`,
+      isCompleted: false,
+      taskCreationDate: generateNewDate(),
+    };
+    dispatch(addNewTask(newTask));
+    await axios.post("https://createnewtask-sh3wjct3pa-rj.a.run.app/", {
+      newTask,
+    });
     reset();
   };
 

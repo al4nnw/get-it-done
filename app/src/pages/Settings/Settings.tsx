@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import IconHome from "../../assets/icons/iconHome.svg";
 import IconLogout from "../../assets/icons/iconLogout.svg";
@@ -10,19 +11,17 @@ import style from "./Settings.module.scss";
 import { getAuth, deleteUser } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../lib/firebase";
-import { useEffect } from "react";
-import { setCurrentUserNull } from "../../lib/redux/reducers/user/actions";
+import { useSelector } from "react-redux";
 
-import { useDispatch, useSelector } from "react-redux";
+interface RootState {
+  userReducer: any; // replace 'any' with the shape of your state in userReducer
+}
 
 export default function Settings() {
-  const { currentUser } = useSelector((rootReducer) => rootReducer.userReducer);
+  const { currentUser } = useSelector(
+    (rootReducer: RootState) => rootReducer.userReducer
+  );
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const handleChangeClick = (element: HTMLElement) => {
-    console.log(element);
-  };
 
   const onClickLogout = () => {
     auth

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import ITask from "../../../../types/ITask";
 import userActionTypes from "./action-types";
 

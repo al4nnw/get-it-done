@@ -7,9 +7,6 @@ import LinkTo from "@components/Link/Link";
 import useUserSignin from "../../../utils/useUserSignin";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 const validationSchema = z.object({
   email: z.string().min(1, { message: "Email is required" }).email({
@@ -23,7 +20,6 @@ const validationSchema = z.object({
 export type ValidationSchemaSignIn = z.infer<typeof validationSchema>;
 
 export default function SignIn() {
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -32,7 +28,6 @@ export default function SignIn() {
   } = useForm<ValidationSchemaSignIn>({
     resolver: zodResolver(validationSchema),
   });
-  const { currentUser } = useSelector((rootReducer) => rootReducer.userReducer);
 
   const { userSignin, firebaseErrors } = useUserSignin();
 
