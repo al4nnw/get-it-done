@@ -1,6 +1,6 @@
 export default interface ITask {
-  taskId?: string;
+  taskId: string;
   taskName: string;
-  completed: boolean;
-  creationTime?: number;
+  isCompleted: boolean;
+  taskCreationDate: string;
 }

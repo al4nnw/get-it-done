@@ -2,31 +2,28 @@ import ITask from "../../../types/ITask";
 import { MdDelete, MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
 import { IoIosCheckbox } from "react-icons/io";
 import style from "./Task.module.scss";
+import { useDispatch } from "react-redux";
+import {
+  updateTaskCompleted,
+  updateTaskName,
+  deleteTask,
+} from "../../../lib/redux/reducers/user/actions";
 
 interface TaskProps {
   task: ITask;
-  deleteTask: (task: ITask) => void;
-  completeTask: (task: ITask) => void;
-  editTaskName: (id: string | undefined, name: string) => void;
 }
 
-export default function Task({
-  task,
-  deleteTask,
-  completeTask,
-  editTaskName,
-}: TaskProps) {
+export default function Task({ task }: TaskProps) {
+  console.log(task);
+  const dispatch = useDispatch();
   return (
-    <article
-      id={task.taskName.trim().split(" ").join("")}
-      className={style.task}
-    >
+    <article id={task.taskId} className={style.task}>
       <input
         type="text"
         readOnly
         defaultValue={task.taskName}
         onFocus={(e) => {
-          if (!task.completed) {
+          if (!task.isCompleted) {
             e.currentTarget.readOnly = false;
             e.currentTarget.classList.add(`${style["taskEdit"]}`);
           }
@@ -35,7 +32,9 @@ export default function Task({
           if (e.currentTarget.value != "") {
             e.currentTarget.readOnly = true;
             e.currentTarget.classList.remove(`${style["taskEdit"]}`);
-            editTaskName(task.taskId, e.target.value);
+            dispatch(
+              updateTaskName({ taskId: task.taskId, taskName: e.target.value })
+            );
           } else {
             e.currentTarget.value = task.taskName;
             e.currentTarget.readOnly = true;
@@ -46,14 +45,12 @@ export default function Task({
       <div className={style.taskInteractions}>
         <button
           onClick={() => {
-            const taskElement = document.querySelector(
-              `#${task.taskName.trim().split(" ").join("")}`
-            );
+            const taskElement = document.querySelector(`#${task.taskId}`);
             taskElement?.classList.toggle(`${style["taskCompleted"]}`);
-            completeTask(task);
+            dispatch(updateTaskCompleted(task));
           }}
         >
-          {task.completed ? (
+          {task.isCompleted ? (
             <IoIosCheckbox />
           ) : (
             <MdOutlineCheckBoxOutlineBlank />
@@ -61,12 +58,10 @@ export default function Task({
         </button>
         <button
           onClick={() => {
-            const taskElement = document.querySelector(
-              `#${task.taskName.trim().split(" ").join("")}`
-            );
+            const taskElement = document.querySelector(`#${task.taskId}`);
             taskElement?.classList.add(`${style["removeTask"]}`);
             setTimeout(() => {
-              deleteTask(task);
+              dispatch(deleteTask(task));
             }, 100);
           }}
         >

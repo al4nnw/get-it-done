@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import generateNewId from "../../../utils/generateNewId";
 import style from "./ConfigInput.module.scss";
 
 interface ConfigInputProps {
@@ -15,25 +16,15 @@ export default function ConfigInput({
   return (
     <article className={style.configInput}>
       <input
-        id={inputValue.trim().slice(0, inputValue.indexOf(" "))}
+        id={`${inputValue.slice(
+          0,
+          inputValue.indexOf(" ") + 1
+        )}${generateNewId()}`}
         type="text"
         value={inputValue}
         readOnly={true}
       />
-      {canBeChanged && (
-        <button
-          onClick={() =>
-            handleClick &&
-            handleClick(
-              document.querySelector(
-                `#${inputValue.trim().slice(0, inputValue.indexOf(" "))}`
-              )!
-            )
-          }
-        >
-          Change
-        </button>
-      )}
+      {canBeChanged && <button>Change</button>}
     </article>
   );
 }

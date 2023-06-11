@@ -7,6 +7,9 @@ import useUserSignup from "../../../utils/useUserSignup";
 import SignFormInput from "@components/SignFormInput/SignFormInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = z
   .object({
@@ -33,6 +36,8 @@ const validationSchema = z
 export type ValidationSchemaSignUp = z.infer<typeof validationSchema>;
 
 export default function SignUp() {
+  const navigate = useNavigate();
+  const { currentUser } = useSelector((rootReducer) => rootReducer.userReducer);
   const {
     register,
     handleSubmit,
@@ -49,6 +54,10 @@ export default function SignUp() {
     await userSignup(data);
     reset();
   };
+
+  useEffect(() => {
+    currentUser && navigate("/home");
+  }, [currentUser, navigate]);
 
   return (
     <main className={style.sign}>

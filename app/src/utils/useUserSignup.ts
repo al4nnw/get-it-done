@@ -4,11 +4,11 @@ import { auth } from "../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import { ValidationSchemaSignUp } from "@pages/Sign/SignUp/SignUp";
 import { useState } from "react";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import userActionTypes from "../lib/redux/reducers/user/action-types.ts";
 
 const useUserSignup = () => {
-  const createUserDocFunctionURL =
-    "https://createuserdoc-sh3wjct3pa-rj.a.run.app";
+  const dispatch = useDispatch();
   const [firebaseErrors, setFirebaseErrors] = useState<any>(null);
   const navigate = useNavigate();
 
@@ -25,12 +25,16 @@ const useUserSignup = () => {
           ...user,
           displayName: data.firstName,
         });
-        /* await axios
-          .post(createUserDocFunctionURL, {
-            userUid: user.uid,
+        console.log("SETTING USER");
+        dispatch({
+          type: userActionTypes.LOGIN,
+          payload: {
+            userName: user.displayName,
             userEmail: user.email,
-          })
-          .then((response) => console.log(response)); */
+            userUID: user.uid,
+            userGoal: "No goal",
+          },
+        });
         navigate("/home");
       }
     } catch (error: any) {

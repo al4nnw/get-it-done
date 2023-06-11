@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import IconUser from "../../assets/icons/iconUser.svg";
 import IconGoal from "../../assets/icons/iconGoal.svg";
 import IconSettings from "../../assets/icons/iconGear.svg";
@@ -10,108 +11,55 @@ import FormInput from "@components/FormInput/FormInput";
 import { useForm, SubmitHandler } from "react-hook-form";
 import style from "./Home.module.scss";
 import ITask from "../../types/ITask";
-import { useState, useEffect } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../lib/firebase";
-import { useNavigate } from "react-router-dom";
-import IUser from "../../types/IUser";
-import axios from "axios";
+import { addNewTask } from "../../lib/redux/reducers/user/actions";
+import generateNewId from "../../utils/generateNewId";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Home() {
-  const [user, setUser] = useState<IUser>();
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { currentUser, userTasks } = useSelector(
+    (rootReducer) => rootReducer.userReducer
+  );
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<ITask>();
-  const [taskList, setTaskList] = useState<ITask[]>([]);
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        navigate("/signin");
-      } else {
-        console.log(user);
-        setUser({
-          userUid: user.uid,
-          userName: user?.displayName,
-          userEmail: user?.email,
-        });
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
-  const onSubmit: SubmitHandler<ITask> = (data) => {
-    createNewTask(data);
-    reset();
+  const generateNewDate = () => {
+    const date = new Date();
+    return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} - ${date.getDate()}/${
+      date.getMonth() + 1
+    }/${date.getFullYear()}`;
   };
 
-  function generateRandomId() {
-    return Math.random().toString(36);
-  }
-
-  async function createNewTask({ taskName }: { taskName: string }) {
-    console.log("adding task");
-    setTaskList((prev) => [
-      ...prev,
-      { taskName, taskId: generateRandomId(), completed: false },
-    ]);
-    console.log("adding task");
-    const baseUrl = "https://createnewtask-sh3wjct3pa-rj.a.run.app";
-    /*     await axios
-      .post(baseUrl, {
-        userUid: user?.userUid,
-        task: {
-          taskName,
-          completed: false,
-        },
+  const onSubmit: SubmitHandler<ITask> = (data) => {
+    dispatch(
+      addNewTask({
+        ...data,
+        taskId: `${data.taskName
+          .trim()
+          .slice(0, data.taskName.indexOf(" "))}${generateNewId()}`,
+        isCompleted: false,
+        taskCreationDate: generateNewDate(),
       })
-      .then((response) => console.log(response)); */
-  }
-
-  function deleteTask(task: ITask) {
-    setTaskList((prev) => prev.filter((t) => t.taskId !== task.taskId));
-  }
-
-  function completeTask(task: ITask) {
-    setTaskList((prev) =>
-      prev.map((t) =>
-        t.taskId === task.taskId ? { ...t, completed: !t.completed } : t
-      )
     );
-  }
-
-  function editTaskName(id: string | undefined, name: string) {
-    setTaskList((prev) =>
-      prev.map((t) =>
-        t.taskId === id
-          ? {
-              ...t,
-              taskName: name,
-            }
-          : t
-      )
-    );
-  }
+    reset();
+  };
 
   return (
     <main className={style.home}>
       <div className={style.navbarLinks}>
         <FloatingButton
           elementType="div"
-          elementText={user?.userName ?? "Unknown"}
+          elementText={currentUser.userName}
           imageIcon={IconUser}
         />
         <FloatingButton
           elementType="div"
-          elementText={user?.goal ?? "No goal"}
+          elementText={currentUser.userGoal}
           imageIcon={IconGoal}
         />
         <FloatingLink
@@ -148,15 +96,9 @@ export default function Home() {
             elementText="Tasks"
           />
           <div className={style.taskList}>
-            {taskList.length > 0 ? (
-              taskList.map((task) => (
-                <Task
-                  editTaskName={editTaskName}
-                  key={task.taskId}
-                  task={task}
-                  deleteTask={deleteTask}
-                  completeTask={completeTask}
-                />
+            {userTasks.length > 0 ? (
+              userTasks.map((task: ITask) => (
+                <Task key={task.taskId} task={task} />
               ))
             ) : (
               <span className={style.taskWarning}>No tasks were found!</span>

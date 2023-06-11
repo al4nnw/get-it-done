@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import IconHome from "../../assets/icons/iconHome.svg";
 import IconLogout from "../../assets/icons/iconLogout.svg";
 import FloatingLink from "@components/FloatingLink/FloatingLink";
@@ -6,41 +7,21 @@ import Title from "@components/Title/Title";
 import ConfigInput from "./ConfigInput/ConfigInput";
 import FormButton from "@components/FormButton/FormButton";
 import style from "./Settings.module.scss";
-import { getAuth, onAuthStateChanged, deleteUser } from "firebase/auth";
+import { getAuth, deleteUser } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../lib/firebase";
-import { useEffect, useState } from "react";
-import IUser from "../../types/IUser";
+import { useEffect } from "react";
+import { setCurrentUserNull } from "../../lib/redux/reducers/user/actions";
+
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Settings() {
-  const [user, setUser] = useState<IUser>();
+  const { currentUser } = useSelector((rootReducer) => rootReducer.userReducer);
   const navigate = useNavigate();
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        navigate("/signin");
-      } else {
-        setUser({
-          userUid: user.uid,
-          userEmail: user?.email,
-          userName: user?.displayName,
-        });
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
+  const dispatch = useDispatch();
 
   const handleChangeClick = (element: HTMLElement) => {
     console.log(element);
-
-    /*    if (element.nodeValue != "Password") {
-      element?.removeAttribute("readOnly");
-      element?.focus;
-    } */
   };
 
   const onClickLogout = () => {
@@ -57,7 +38,11 @@ export default function Settings() {
   const onClickDelete = () => {
     const auth = getAuth();
     const user = auth.currentUser;
-    user && deleteUser(user).then(() => navigate("/signup"));
+    if (user) {
+      deleteUser(user).then(() => {
+        navigate("/signup");
+      });
+    }
   };
 
   return (
@@ -82,14 +67,11 @@ export default function Settings() {
           elementText="Settings"
         />
         <ConfigInput
-          inputValue={user?.userName ?? "Unknown"}
+          inputValue={currentUser.userName}
           handleClick={handleChangeClick}
           canBeChanged
         />
-        <ConfigInput
-          inputValue={user?.userEmail ?? "unknown@gmail.com"}
-          canBeChanged={false}
-        />
+        <ConfigInput inputValue={currentUser.userEmail} canBeChanged={false} />
         <ConfigInput
           handleClick={handleChangeClick}
           inputValue="Password"
@@ -97,7 +79,7 @@ export default function Settings() {
         />
         <ConfigInput
           handleClick={handleChangeClick}
-          inputValue={user?.goal ?? "No goal"}
+          inputValue={currentUser.userGoal}
           canBeChanged
         />
         <FormButton
