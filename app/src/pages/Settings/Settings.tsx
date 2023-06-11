@@ -66,22 +66,10 @@ export default function Settings() {
           elementType="h1"
           elementText="Settings"
         />
-        <ConfigInput
-          inputValue={currentUser.userName}
-          handleClick={handleChangeClick}
-          canBeChanged
-        />
+        <ConfigInput inputValue={currentUser.userName} canBeChanged />
         <ConfigInput inputValue={currentUser.userEmail} canBeChanged={false} />
-        <ConfigInput
-          handleClick={handleChangeClick}
-          inputValue="Password"
-          canBeChanged
-        />
-        <ConfigInput
-          handleClick={handleChangeClick}
-          inputValue={currentUser.userGoal}
-          canBeChanged
-        />
+        <ConfigInput inputValue="Password" canBeChanged />
+        <ConfigInput inputValue={currentUser.userGoal} canBeChanged />
         <FormButton
           buttonClass="deleteAccountButton"
           buttonType="button"
