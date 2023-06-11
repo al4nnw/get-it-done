@@ -13,8 +13,6 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../../lib/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentUserNull } from "../../lib/redux/reducers/user/actions";
-import Modal from "@pages/Modal/Modal";
-import { useState } from "react";
 
 interface RootState {
   userReducer: any; // replace 'any' with the shape of your state in userReducer

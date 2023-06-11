@@ -13,3 +13,16 @@ html {
   font-size: 62.5%;
   scroll-behavior: smooth;
 }
+
+body::-webkit-scrollbar {
+  width: 0.8em;
+}
+
+body::-webkit-scrollbar-track {
+  background: $bgDarkMain;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: $clrLightGreen;
+  outline: none;
+}

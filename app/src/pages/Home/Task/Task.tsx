@@ -25,6 +25,7 @@ export default function Task({ task }: TaskProps) {
     (rootReducer: RootState) => rootReducer.userReducer
   );
   const dispatch = useDispatch();
+
   return (
     <article
       id={task.taskId}
