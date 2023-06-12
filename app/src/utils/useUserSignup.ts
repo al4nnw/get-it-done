@@ -27,10 +27,13 @@ const useUserSignup = () => {
           displayName: data.firstName,
         });
         await axios
-          .post("https://createuserdoc-sh3wjct3pa-rj.a.run.app", {
-            userUID: user.uid,
-            userEmail: user.email,
-          })
+          .post(
+            "https://createuserdoc-sh3wjct3pa-rj.a.run.app",
+            {
+              userUID: user.uid,
+              userEmail: user.email,
+            }
+          )
           .then(() => {
             dispatch({
               type: userActionTypes.LOGIN,

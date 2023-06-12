@@ -13,26 +13,13 @@ interface IAction {
 }
 
 const userReducer = (state = inicialState, action: IAction) => {
-  const taskNameModifiedList = state.userTasks.map((task: ITask) =>
-    task.taskId === action.payload.taskId
-      ? { ...task, taskName: action.payload.taskName }
-      : task
-  );
-  const completedTaskModifiedList = state.userTasks.map((task: ITask) =>
-    task.taskId === action.payload.taskId
-      ? { ...task, isCompleted: !action.payload.isCompleted }
-      : task
-  );
-  const deleteTaskModifiedList = state.userTasks.filter(
-    (task: ITask) => task.taskId !== action.payload.taskId
-  );
-
   switch (action.type) {
     case userActionTypes.LOGIN:
       return { ...state, currentUser: action.payload };
     case userActionTypes.LOGOUT:
       return {
-        inicialState,
+        ...state,
+        ...inicialState,
       };
     case userActionTypes.SET_TASKS:
       return {
@@ -47,17 +34,33 @@ const userReducer = (state = inicialState, action: IAction) => {
     case userActionTypes.UPDATE_TASK_NAME:
       return {
         ...state,
-        userTasks: [...taskNameModifiedList],
+        userTasks: [
+          ...state.userTasks.map((task: ITask) =>
+            task.taskId === action.payload.taskId
+              ? { ...task, taskName: action.payload.taskName }
+              : task
+          ),
+        ],
       };
     case userActionTypes.UPDATE_TASK_STATUS:
       return {
         ...state,
-        userTasks: [...completedTaskModifiedList],
+        userTasks: [
+          ...state.userTasks.map((task: ITask) =>
+            task.taskId === action.payload.taskId
+              ? { ...task, isCompleted: !action.payload.isCompleted }
+              : task
+          ),
+        ],
       };
     case userActionTypes.DELETE_TASK:
       return {
         ...state,
-        userTasks: [...deleteTaskModifiedList],
+        userTasks: [
+          ...state.userTasks.filter(
+            (task: ITask) => task.taskId !== action.payload.taskId
+          ),
+        ],
       };
   }
   return state;

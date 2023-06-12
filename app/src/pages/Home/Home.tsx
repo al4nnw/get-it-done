@@ -62,7 +62,7 @@ export default function Home() {
     };
     firstLoad && setIsLoading(true);
     await axios
-      .post("https://createnewtask-sh3wjct3pa-rj.a.run.app", {
+      .post("https://createnewtask-sh3wjct3pa-rj.a.run.app/", {
         userUID: currentUser.userUID,
         task: newTask,
       })

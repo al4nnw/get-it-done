@@ -13,6 +13,8 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../../lib/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentUserNull } from "../../lib/redux/reducers/user/actions";
+import axios from "axios";
+import Loading from "@pages/Loading/Loading";
 
 interface RootState {
   userReducer: any; // replace 'any' with the shape of your state in userReducer
@@ -40,12 +42,24 @@ export default function Settings() {
     const auth = getAuth();
     const user = auth.currentUser;
     if (user) {
-      deleteUser(user).then(() => {
-        dispatch(setCurrentUserNull());
-        navigate("/signup");
-      });
+      axios
+        .post("https://deleteuserdata-sh3wjct3pa-rj.a.run.app", {
+          userUID: currentUser.userUID,
+        })
+        .then((response) => {
+          console.log(response);
+          deleteUser(user).then(() => {
+            dispatch(setCurrentUserNull());
+            navigate("/signup");
+          });
+        })
+        .catch((error) => console.log(error));
     }
   };
+
+  if (!currentUser) {
+    return <Loading />;
+  }
 
   return (
     <main className={style.settings}>
