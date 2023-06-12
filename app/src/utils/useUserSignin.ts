@@ -41,7 +41,6 @@ const useUserSignin = () => {
             userUID: user.uid,
           })
           .then((response) => {
-            console.log(response);
             dispatch(setCurrentUserTasks([...response.data]));
           });
 

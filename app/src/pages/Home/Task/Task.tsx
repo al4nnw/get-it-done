@@ -54,8 +54,7 @@ export default function Task({ task }: TaskProps) {
                 userUID: currentUser.userUID,
                 task: { ...task, taskName: e.target.value },
               })
-              .then((response) => {
-                console.log(response);
+              .then(() => {
                 dispatch(
                   updateTaskName({
                     taskId: task.taskId,

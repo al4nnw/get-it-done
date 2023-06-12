@@ -31,7 +31,6 @@ export default function Home() {
   const { currentUser, userTasks } = useSelector(
     (rootReducer: RootState) => rootReducer.userReducer
   );
-  console.log(userTasks);
 
   useEffect(() => {
     getUser();

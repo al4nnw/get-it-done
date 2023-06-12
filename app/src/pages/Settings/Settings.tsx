@@ -10,7 +10,6 @@ import FormButton from "@components/FormButton/FormButton";
 import style from "./Settings.module.scss";
 import { getAuth, deleteUser } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../lib/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentUserNull } from "../../lib/redux/reducers/user/actions";
 import axios from "axios";
@@ -28,9 +27,11 @@ export default function Settings() {
   const navigate = useNavigate();
 
   const onClickLogout = () => {
+    const auth = getAuth();
     auth
       .signOut()
       .then(() => {
+        dispatch(setCurrentUserNull());
         navigate("/signin");
       })
       .catch((error) => {
@@ -46,8 +47,7 @@ export default function Settings() {
         .post("https://deleteuserdata-sh3wjct3pa-rj.a.run.app", {
           userUID: currentUser.userUID,
         })
-        .then((response) => {
-          console.log(response);
+        .then(() => {
           deleteUser(user).then(() => {
             dispatch(setCurrentUserNull());
             navigate("/signup");
